@@ -4,6 +4,7 @@ const {
   registerUser,
   userLogin,
   getUserDetails,
+  updateUserDetails,
 } = require("../controllers/userControllers");
 
 const { protect } = require("../middlewares/protectedRoutes");
@@ -18,5 +19,8 @@ router.route("/login").post(userLogin);
 
 // User gets his/her own details
 router.route("/userDetails").get(protect, getUserDetails);
+
+// User updates his/her own details
+router.route("/userUpdate").put(protect, updateUserDetails);
 
 module.exports = router;

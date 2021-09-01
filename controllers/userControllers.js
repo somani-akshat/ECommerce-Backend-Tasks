@@ -69,4 +69,32 @@ const getUserDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, userLogin, getUserDetails };
+// User updates his/her own details
+const updateUserDetails = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    if (req.body.name) {
+      user.name = req.body.name;
+    }
+    if (req.body.email) {
+      user.email = req.body.email;
+    }
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
+      message: "User details updated successfully",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not Found");
+  }
+});
+
+module.exports = { registerUser, userLogin, getUserDetails, updateUserDetails };

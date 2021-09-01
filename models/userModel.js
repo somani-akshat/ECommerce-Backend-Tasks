@@ -33,7 +33,7 @@ userSchema.methods.matchPassword = async function (enterredPassword) {
 // Middleware for hashing password
 // pre => before saving the user in the database
 userSchema.pre("save", async function () {
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(5);
   this.password = await bcrypt.hash(this.password, salt);
 });
 

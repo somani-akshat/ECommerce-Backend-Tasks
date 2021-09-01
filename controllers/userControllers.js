@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 // const generateToken = require("../utils/generateToken");
 const jwt = require("jsonwebtoken");
+const generateToken = require("../middlewares/generateToken");
 
 // New user
 const registerUser = asyncHandler(async (req, res) => {
@@ -20,7 +21,7 @@ const registerUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        // token: jwt.sign({ userId }, process.env.JWT_KEY),
+        token: generateToken(user._id),
         message: "User Register Successful",
       });
     } else {
@@ -43,8 +44,7 @@ const userLogin = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      //   return jwt.sign(( user._id ), process.env.JWT_KEY);
-      token: jwt.sign({ userId }, process.env.JWT_KEY),
+      token: generateToken(user._id),
       message: "User Login Successful",
     });
   } else {
@@ -53,4 +53,20 @@ const userLogin = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, userLogin };
+// User can see his/her details - Protected Route
+const getUserDetails = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("No User found");
+  }
+});
+
+module.exports = { registerUser, userLogin, getUserDetails };

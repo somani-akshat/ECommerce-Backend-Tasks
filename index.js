@@ -2,7 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/config");
 const colors = require("colors");
+
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`.cyan);

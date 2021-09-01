@@ -51,4 +51,16 @@ const addProduct = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addProduct };
+// Get details of all products
+const getAllProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({});
+  if (products.length > 0) {
+    res.status(200).json(products);
+  } else {
+    res.status(404).json({
+      message: "No Product found",
+    });
+  }
+});
+
+module.exports = { addProduct, getAllProducts };

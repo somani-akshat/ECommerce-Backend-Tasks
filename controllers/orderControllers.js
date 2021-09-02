@@ -71,4 +71,42 @@ const getAllOrders = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addOrder, getOrder, getAllOrders };
+// Update order details - logged in users
+const updateOrderDetails = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    if (req.body.orderItems) {
+      order.orderItems = req.body.orderItems;
+      var itemsPrice = Number(
+        req.body.orderItems.reduce((acc, item) => acc + item.price, 0)
+      );
+      order.itemsPrice = itemsPrice;
+      var taxPrice = Number(0.15 * itemsPrice);
+      order.taxPrice = taxPrice;
+      var shippingPrice = Number(itemsPrice > 500 ? 0 : 50);
+      order.shippingPrice = shippingPrice;
+      var totalPrice =
+        Number(itemsPrice) + Number(taxPrice) + Number(shippingPrice);
+      order.totalPrice = totalPrice;
+    }
+    if (req.body.shippingAddress) {
+      order.shippingAddress = req.body.shippingAddress;
+    }
+    if (req.body.paymentMethod) {
+      order.paymentMethod = req.body.paymentMethod;
+    }
+
+    const updatedOrder = await order.save();
+    res.json({
+      updatedOrder,
+      message: "Order details updated successfully",
+    });
+  } else {
+    // ERROR
+    res.status(400).json({
+      message: "Order not Found",
+    });
+  }
+});
+
+module.exports = { addOrder, getOrder, getAllOrders, updateOrderDetails };

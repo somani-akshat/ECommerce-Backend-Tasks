@@ -75,4 +75,34 @@ const getProduct = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addProduct, getAllProducts, getProduct };
+// Get all products in uniform category
+const getUniforms = asyncHandler(async (req, res) => {
+  const products = await Product.find({ category: "uniform" });
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    res.status(404).json({
+      message: "No Uniforms found",
+    });
+  }
+});
+
+// Get all products in stationary category
+const getStationary = asyncHandler(async (req, res) => {
+  const products = await Product.find({ category: "stationary" });
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    res.status(404).json({
+      message: "No Stationary items found",
+    });
+  }
+});
+
+module.exports = {
+  addProduct,
+  getAllProducts,
+  getProduct,
+  getUniforms,
+  getStationary,
+};

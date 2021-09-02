@@ -37,4 +37,25 @@ const addOrder = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addOrder };
+// Get details of a particular order for user - Only logged in users
+const getOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  const user = req.user;
+  if (order) {
+    console.log(order.user.toString());
+    console.log(user._id.toString());
+    if (order.user.toString() === user._id.toString()) {
+      res.status(200).json(order);
+    } else {
+      res.status(404).json({
+        message: "User not authprized to view this order details",
+      });
+    }
+  } else {
+    res.status(404).json({
+      message: "No Order found",
+    });
+  }
+});
+
+module.exports = { addOrder, getOrder };

@@ -147,8 +147,26 @@ const updateProductDetails = asyncHandler(async (req, res) => {
       message: "Product details updated successfully",
     });
   } else {
-    res.status(404);
-    throw new Error("Product not Found");
+    // ERROR
+    res.status(400).json({
+      message: "Product not Found",
+    });
+  }
+});
+
+// Delete a product - Only Admins have access to it
+const deleteProduct = asyncHandler(async (req, res) => {
+  const productExists = await Product.findById(req.params.id);
+  if (productExists) {
+    await Product.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      message: "Product deleted successfully",
+    });
+  } else {
+    // ERROR
+    res.status(400).json({
+      message: "No product found",
+    });
   }
 });
 
@@ -159,4 +177,5 @@ module.exports = {
   getUniforms,
   getStationary,
   updateProductDetails,
+  deleteProduct,
 };

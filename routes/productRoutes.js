@@ -7,6 +7,7 @@ const {
   getUniforms,
   getStationary,
   updateProductDetails,
+  deleteProduct,
 } = require("../controllers/productControllers");
 
 const { adminProtect } = require("../middlewares/protectedRoutes");
@@ -30,5 +31,8 @@ router.route("/stationary").get(getStationary);
 
 // Update product details
 router.route("/updateProduct/:id").put(adminProtect, updateProductDetails);
+
+// Delete product
+router.route("/deleteProduct/:id").delete(adminProtect, deleteProduct);
 
 module.exports = router;

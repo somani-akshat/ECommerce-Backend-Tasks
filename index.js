@@ -7,6 +7,7 @@ const colors = require("colors");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`.cyan);

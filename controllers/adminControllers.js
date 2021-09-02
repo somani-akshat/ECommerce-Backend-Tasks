@@ -52,11 +52,59 @@ const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Order not found");
   }
-}); // 613098cc5f61c5984cec9faf
+});
+
+// Update Order status to Processed after the order is processed by seller and ready to ship by the courier company
+const updateOrderStatusToProcessed = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isProcessed = true;
+    order.currentStatus = "Order is ready for shipping";
+    order.processedAt = new Date();
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+// Update Order status to Shipped after the order is shipped
+const updateOrderStatusToShipped = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isShipped = true;
+    order.currentStatus = "Order is shipped and will reach soon";
+    order.shippedAt = new Date();
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+// Update Order status to Delivered after the order is delivered
+const updateOrderStatusToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isDelivered = true;
+    order.currentStatus = "Order is delivered. Thank you !";
+    order.deliveredAt = new Date();
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
 
 module.exports = {
   getAllUserDetails,
   deleteUser,
   getAllOrderDetails,
   updateOrderStatusToPaid,
+  updateOrderStatusToProcessed,
+  updateOrderStatusToShipped,
+  updateOrderStatusToDelivered,
 };

@@ -4,6 +4,7 @@ const {
   getAllUserDetails,
   deleteUser,
   getAllOrderDetails,
+  updateOrderStatusToPaid,
 } = require("../controllers/adminControllers");
 
 const { adminProtect } = require("../middlewares/protectedRoutes");
@@ -18,5 +19,10 @@ router.route("/deleteUser/:id").delete(adminProtect, deleteUser);
 
 // Get all order details
 router.route("/allOrderDetails").get(adminProtect, getAllOrderDetails);
+
+// Update Order status to paid after the Online Payment is done
+router
+  .route("/updateOrderStatusToPaid/:id")
+  .put(adminProtect, updateOrderStatusToPaid);
 
 module.exports = router;

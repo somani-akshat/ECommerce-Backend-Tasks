@@ -39,4 +39,24 @@ const getAllOrderDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllUserDetails, deleteUser, getAllOrderDetails };
+// Update Order status to paid after the Online Payment is done
+const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.currentStatus = "Order is received and is being processed";
+    order.paidAt = new Date();
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+}); // 613098cc5f61c5984cec9faf
+
+module.exports = {
+  getAllUserDetails,
+  deleteUser,
+  getAllOrderDetails,
+  updateOrderStatusToPaid,
+};

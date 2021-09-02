@@ -42,8 +42,8 @@ const getOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
   const user = req.user;
   if (order) {
-    console.log(order.user.toString());
-    console.log(user._id.toString());
+    // console.log(order.user.toString());
+    // console.log(user._id.toString());
     if (order.user.toString() === user._id.toString()) {
       res.status(200).json(order);
     } else {
@@ -58,4 +58,17 @@ const getOrder = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addOrder, getOrder };
+// Get details of all orders for user - Only logged in users
+const getAllOrders = asyncHandler(async (req, res) => {
+  const userId = req.user._id.toString();
+  const orders = await Order.find({ user: userId });
+  if (orders.length > 0) {
+    res.status(200).json(orders);
+  } else {
+    res.status(404).json({
+      message: "No Orders found",
+    });
+  }
+});
+
+module.exports = { addOrder, getOrder, getAllOrders };

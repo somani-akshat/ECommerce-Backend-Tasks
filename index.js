@@ -33,3 +33,5 @@ app.use("/orders", orderRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`.cyan);
 });
+
+module.exports = app; // for testing

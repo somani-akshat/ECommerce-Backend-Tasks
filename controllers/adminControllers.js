@@ -8,8 +8,9 @@ const getAllUserDetails = asyncHandler(async (req, res) => {
   if (users.length > 0) {
     res.status(200).json(users);
   } else {
-    res.status(404);
-    throw new Error("No User found");
+    res.status(400).json({
+      message: "No user found",
+    });
   }
 });
 
@@ -34,8 +35,9 @@ const getAllOrderDetails = asyncHandler(async (req, res) => {
   if (orders.length > 0) {
     res.status(200).json(orders);
   } else {
-    res.status(404);
-    throw new Error("No Order found");
+    res.status(400).json({
+      message: "No Order found",
+    });
   }
 });
 
@@ -49,8 +51,9 @@ const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(400).json({
+      message: "No Order found",
+    });
   }
 });
 
@@ -64,8 +67,9 @@ const updateOrderStatusToProcessed = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(400).json({
+      message: "No Order found",
+    });
   }
 });
 
@@ -79,8 +83,9 @@ const updateOrderStatusToShipped = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(400).json({
+      message: "No Order found",
+    });
   }
 });
 
@@ -94,8 +99,9 @@ const updateOrderStatusToDelivered = asyncHandler(async (req, res) => {
     const updatedOrder = await order.save();
     res.status(200).json(updatedOrder);
   } else {
-    res.status(404);
-    throw new Error("Order not found");
+    res.status(400).json({
+      message: "No Order found",
+    });
   }
 });
 

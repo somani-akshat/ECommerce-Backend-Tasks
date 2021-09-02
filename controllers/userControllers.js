@@ -23,8 +23,9 @@ const registerUser = asyncHandler(async (req, res) => {
         message: "User Register Successful",
       });
     } else {
-      res.status(404);
-      throw new Error("User not created");
+      res.status(404).json({
+        message: "User not created",
+      });
     }
   }
 });
@@ -36,8 +37,7 @@ const userLogin = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    const userId = user._id;
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -46,8 +46,9 @@ const userLogin = asyncHandler(async (req, res) => {
       message: "User Login Successful",
     });
   } else {
-    res.status(404);
-    throw new Error("Invalid email or password");
+    res.status(404).json({
+      message: "Invalid email or password",
+    });
   }
 });
 
@@ -62,14 +63,16 @@ const getUserDetails = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
     });
   } else {
-    res.status(404);
-    throw new Error("No User found");
+    res.status(404).json({
+      message: "User not Found",
+    });
   }
 });
 
 // User updates his/her own details
 const updateUserDetails = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+
   if (user) {
     if (req.body.name) {
       user.name = req.body.name;
@@ -81,7 +84,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
       user.password = req.body.password;
     }
     const updatedUser = await user.save();
-    res.json({
+    res.status(200).json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
@@ -91,7 +94,10 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not Found");
+    res.json({
+      message: "User not Found",
+    });
+    // throw new Error("User not Found");
   }
 });
 

@@ -33,7 +33,17 @@ const addOrder = asyncHandler(async (req, res) => {
 
     const createOrder = await order.save();
 
-    res.status(201).json(createOrder);
+    res.status(201).json({
+      _id: createOrder._id,
+      orderItems: createOrder.orderItems,
+      user: createOrder.user,
+      shippingAddress: createOrder.shippingAddress,
+      paymentMethod: createOrder.paymentMethod,
+      itemsPrice: createOrder.itemsPrice,
+      taxPrice: createOrder.taxPrice,
+      shippingPrice: createOrder.shippingPrice,
+      totalPrice: createOrder.totalPrice,
+    });
   }
 });
 

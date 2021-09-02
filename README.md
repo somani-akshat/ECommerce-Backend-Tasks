@@ -1,6 +1,4 @@
-# The Student Junction
-
-Backend Tasks
+# The Student Junction Backend Tasks
 
 ## Project Structure
 

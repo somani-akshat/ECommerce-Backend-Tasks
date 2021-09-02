@@ -6,6 +6,7 @@ const {
   getProduct,
   getUniforms,
   getStationary,
+  updateProductDetails,
 } = require("../controllers/productControllers");
 
 const { adminProtect } = require("../middlewares/protectedRoutes");
@@ -26,5 +27,8 @@ router.route("/uniforms").get(getUniforms);
 
 // Get all products in stationary category
 router.route("/stationary").get(getStationary);
+
+// Update product details
+router.route("/updateProduct/:id").put(adminProtect, updateProductDetails);
 
 module.exports = router;

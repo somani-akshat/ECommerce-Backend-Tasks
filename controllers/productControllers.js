@@ -99,10 +99,64 @@ const getStationary = asyncHandler(async (req, res) => {
   }
 });
 
+// Update a product - Only Admins have access to it
+const updateProductDetails = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    if (req.body.name) {
+      product.name = req.body.name;
+    }
+    if (req.body.image) {
+      product.image = req.body.image;
+    }
+    if (req.body.category) {
+      product.category = req.body.category;
+    }
+    if (req.body.material) {
+      product.material = req.body.material;
+    }
+    if (req.body.description) {
+      product.description = req.body.description;
+    }
+    if (req.body.rating) {
+      product.rating = req.body.rating;
+    }
+    if (req.body.numReviews) {
+      product.numReviews = req.body.numReviews;
+    }
+    if (req.body.price) {
+      product.price = req.body.price;
+    }
+    if (req.body.countInStock) {
+      product.countInStock = req.body.countInStock;
+    }
+
+    const updatedProduct = await product.save();
+    res.json({
+      _id: updatedProduct._id,
+      Admin: updatedProduct.Admin,
+      name: updatedProduct.name,
+      image: updatedProduct.image,
+      category: updatedProduct.category,
+      material: updatedProduct.material,
+      description: updatedProduct.description,
+      rating: updatedProduct.rating,
+      numReviews: updatedProduct.numReviews,
+      price: updatedProduct.price,
+      countInStock: updatedProduct.countInStock,
+      message: "Product details updated successfully",
+    });
+  } else {
+    res.status(404);
+    throw new Error("Product not Found");
+  }
+});
+
 module.exports = {
   addProduct,
   getAllProducts,
   getProduct,
   getUniforms,
   getStationary,
+  updateProductDetails,
 };

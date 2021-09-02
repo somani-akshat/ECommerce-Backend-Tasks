@@ -4,6 +4,7 @@ const {
   getOrder,
   getAllOrders,
   updateOrderDetails,
+  cancelOrder,
 } = require("../controllers/orderControllers");
 const { protect } = require("../middlewares/protectedRoutes");
 
@@ -20,5 +21,8 @@ router.route("/allOrders").get(protect, getAllOrders);
 
 // Update details of order for user
 router.route("/updateOrder/:id").put(protect, updateOrderDetails);
+
+// Update details of order for user
+router.route("/cancelOrder/:id").delete(protect, cancelOrder);
 
 module.exports = router;

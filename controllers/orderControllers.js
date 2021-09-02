@@ -48,7 +48,7 @@ const getOrder = asyncHandler(async (req, res) => {
       res.status(200).json(order);
     } else {
       res.status(404).json({
-        message: "User not authprized to view this order details",
+        message: "User not authorized to view this order details",
       });
     }
   } else {
@@ -109,4 +109,32 @@ const updateOrderDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addOrder, getOrder, getAllOrders, updateOrderDetails };
+// Cancel Order - logged in users
+const cancelOrder = asyncHandler(async (req, res) => {
+  const orderExists = await Order.findById(req.params.id);
+  if (orderExists) {
+    if (orderExists.user.toString() === req.user._id.toString()) {
+      await Order.findByIdAndDelete(req.params.id);
+      res.status(200).json({
+        message: "Order cancelled successfully",
+      });
+    } else {
+      res.status(404).json({
+        message: "User not authorized to delete this order",
+      });
+    }
+  } else {
+    // ERROR
+    res.status(400).json({
+      message: "No order found",
+    });
+  }
+});
+
+module.exports = {
+  addOrder,
+  getOrder,
+  getAllOrders,
+  updateOrderDetails,
+  cancelOrder,
+};
